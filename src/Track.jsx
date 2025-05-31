@@ -13,10 +13,10 @@ function Track({ track, onAdd, onRemove }) {
         <h3 className="track-title">{track.songTitle}</h3>
         <h4 className="track-artist">{track.songArtist}</h4>
         {onAdd && (
-        <button onClick={() => onAdd(track)}>Add to Playlist</button>
+        <button className="add" onClick={() => onAdd(track)}>Add to Playlist</button>
       )}
       {onRemove && (
-        <button onClick={() => onRemove(track)}>Remove from Playlist</button>
+        <button className="remove" onClick={() => onRemove(track)}>Remove from Playlist</button>
       )}
       </div>
     </div>
