@@ -2,7 +2,7 @@ import React from 'react';
 import TrackList from './Tracklist';
 import SaveButton from './SaveButton';
 
-function Playlist({playlistTracks, onRemove}) {
+function Playlist({playlistTracks, onRemove, onCreate}) {
 
   if(playlistTracks.length === 0) {
     return (
@@ -16,7 +16,7 @@ function Playlist({playlistTracks, onRemove}) {
    <div>
     <h2>Your Playlist</h2>
     <TrackList tracks={playlistTracks} onRemove={onRemove}/>
-    <SaveButton />
+    <SaveButton onCreate={onCreate}/>
     </div>
  )}
 }

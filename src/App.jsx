@@ -8,18 +8,21 @@ function App() {
   const dummyTracks = [
     {
       id: 1,
+      uri: 1,
       songTitle: 'Dreams',
       songArtist: 'Fleetwood Mac',
-      imgSrc: 'https://via.placeholder.com/100'
+      imgSrc: 'https://i.scdn.co/image/ab67616d0000b27357df7ce0eac715cf70e519a7'
     },
     {
       id: 2,
+      uri: 2,
       songTitle: 'Blinding Lights',
       songArtist: 'The Weeknd',
       imgSrc: 'https://via.placeholder.com/100'
     },
     {
       id: 3,
+      uri: 3,
       songTitle: 'Mr. Brightside',
       songArtist: 'The Killers',
       imgSrc: 'https://via.placeholder.com/100'
@@ -56,7 +59,14 @@ function App() {
         setSearchResults(prevSearchResults => [track,...prevSearchResults]);
       }
     });
+  }
 
+  function handlePlaylistCreate() {
+    const uri = playlistTracks.map(track => track.uri)
+    console.log("we're making a playlist baby!") //Add API Data
+    setSearchResults([]);
+    setPlaylistTracks([]);
+    setRemovedFromCurrentSearch([]);
   }
 
   return (
@@ -65,7 +75,7 @@ function App() {
       <SearchBar search={search} onSearchSubmit={handleSearchSubmit} onSearchChange={handleSearchChange}/>
       <div className="main">
       <SearchResults SearchResultTracks={searchResults} onAdd={addSongToPlaylist}/>
-      <Playlist playlistTracks={playlistTracks} onRemove={removeSongFromPlaylist}/>
+      <Playlist playlistTracks={playlistTracks} onRemove={removeSongFromPlaylist} onCreate={handlePlaylistCreate}/>
       </div>
     </div>
   );

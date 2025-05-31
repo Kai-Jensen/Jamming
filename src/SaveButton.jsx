@@ -1,9 +1,9 @@
 import React from 'react';
 import './SearchButton.css'
 
-function SaveButton() {
+function SaveButton({onCreate}) {
  return (
-    <button className="SearchButton">Create Playlist</button>
+    <button className="SearchButton" onClick={onCreate}>Create Playlist</button>
  )
 }
 
