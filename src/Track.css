@@ -1,0 +1,35 @@
+.track {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    gap: 15px;
+    background-color: #f9f9f9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+  
+  .track-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+  
+  .track-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .track-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .track-artist {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
