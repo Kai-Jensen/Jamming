@@ -31,8 +31,32 @@ function App() {
   }
   function handleSearchSubmit(e) {
   e.preventDefault();
-  console.log('form submitted!')
   setSearch('')
+  setRemovedFromCurrentSearch([]);
+  }
+
+  const [searchResults, setSearchResults] = useState(dummyTracks);
+  const [playlistTracks, setPlaylistTracks] = useState([]);
+  const [removedFromCurrentSearch, setRemovedFromCurrentSearch] = useState([]);
+
+  function addSongToPlaylist(track) {
+    setPlaylistTracks(prevPlaylist => [track,...prevPlaylist]);
+    setRemovedFromCurrentSearch(prevSearch => [track,...prevSearch]);
+    setSearchResults(prevResults =>
+      prevResults.filter(t => t.id !== track.id)
+    );
+  }
+
+  function removeSongFromPlaylist(track) {
+    setPlaylistTracks(prevResults =>
+      prevResults.filter(t => t.id !== track.id)
+    );
+    removedFromCurrentSearch.forEach(t => {
+      if(t.id === track.id) {
+        setSearchResults(prevSearchResults => [track,...prevSearchResults]);
+      }
+    });
+
   }
 
   return (
@@ -40,8 +64,8 @@ function App() {
       <h1>Spotify Playlist Maker</h1>
       <SearchBar search={search} onSearchSubmit={handleSearchSubmit} onSearchChange={handleSearchChange}/>
       <div className="main">
-      <SearchResults SearchResultTracks={dummyTracks}/>
-      <Playlist playlistTracks={dummyTracks}/>
+      <SearchResults SearchResultTracks={searchResults} onAdd={addSongToPlaylist}/>
+      <Playlist playlistTracks={playlistTracks} onRemove={removeSongFromPlaylist}/>
       </div>
     </div>
   );

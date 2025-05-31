@@ -1,7 +1,7 @@
 import React from 'react';
 import './Track.css';
 
-function Track({ track }) {
+function Track({ track, onAdd, onRemove }) {
   return (
     <div className="track">
       <img 
@@ -12,6 +12,12 @@ function Track({ track }) {
       <div className="track-info">
         <h3 className="track-title">{track.songTitle}</h3>
         <h4 className="track-artist">{track.songArtist}</h4>
+        {onAdd && (
+        <button onClick={() => onAdd(track)}>Add to Playlist</button>
+      )}
+      {onRemove && (
+        <button onClick={() => onRemove(track)}>Remove from Playlist</button>
+      )}
       </div>
     </div>
   );
