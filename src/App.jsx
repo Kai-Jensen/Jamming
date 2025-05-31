@@ -29,6 +29,7 @@ function App() {
     }
   ];
   const [search, setSearch] = useState('');
+
   function handleSearchChange(e) {
   setSearch(e.target.value)
   }
@@ -37,6 +38,12 @@ function App() {
   setSearch('')
   setRemovedFromCurrentSearch([]);
   }
+
+  const [playlistName, setPlaylistName] = useState('Your Playlist');
+
+  function handleNameChange(e) {
+    setPlaylistName(e.target.value)
+    }
 
   const [searchResults, setSearchResults] = useState(dummyTracks);
   const [playlistTracks, setPlaylistTracks] = useState([]);
@@ -67,6 +74,7 @@ function App() {
     setSearchResults([]);
     setPlaylistTracks([]);
     setRemovedFromCurrentSearch([]);
+    setPlaylistName('Your Playlist');
   }
 
   return (
@@ -75,7 +83,7 @@ function App() {
       <SearchBar search={search} onSearchSubmit={handleSearchSubmit} onSearchChange={handleSearchChange}/>
       <div className="main">
       <SearchResults SearchResultTracks={searchResults} onAdd={addSongToPlaylist}/>
-      <Playlist playlistTracks={playlistTracks} onRemove={removeSongFromPlaylist} onCreate={handlePlaylistCreate}/>
+      <Playlist playlistTracks={playlistTracks} onRemove={removeSongFromPlaylist} onCreate={handlePlaylistCreate} playlistName={playlistName} onPlaylistNameChange={handleNameChange}/>
       </div>
     </div>
   );
