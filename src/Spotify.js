@@ -30,7 +30,7 @@ export const initiateLogin = async () => {
 
   localStorage.setItem('spotify_code_verifier', codeVerifier);
 
-  const scope = 'user-read-private user-read-email';
+  const scope = 'user-read-private user-read-email playlist-modify-private playlist-modify-public' ;
 
   const authUrl = `${authEndpoint}?response_type=code&client_id=${encodeURIComponent(clientId)}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(redirectUri)}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
 
