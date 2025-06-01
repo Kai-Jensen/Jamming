@@ -49,13 +49,45 @@ function App() {
   ];
   const [search, setSearch] = useState('');
 
+  async function submitSearch(query) {
+    const url = `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=album%2Ctrack&limit=10`;
+    
+    const headers = {
+      "Authorization": `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  
+    try {
+      const response = await fetch(url, { headers });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log(data)
+      const simplifiedTracks = data.tracks.items.map(track => ({
+        id: track.id,
+        songTitle: track.name,
+        songArtist: track.artists[0].name,
+        imgSrc: track.album.images[0]?.url || 'default_image_url',
+        uri: track.uri
+      }));
+      console.log(simplifiedTracks)
+      setSearchResults(simplifiedTracks)
+      return simplifiedTracks;
+    } catch (error) {
+      console.error('Error fetching API:', error);
+      throw error; 
+    }
+  }
   function handleSearchChange(e) {
   setSearch(e.target.value)
   }
   function handleSearchSubmit(e) {
   e.preventDefault();
+  submitSearch(search)
   setSearch('')
-  setRemovedFromCurrentSearch([]);
   }
 
   const [playlistName, setPlaylistName] = useState('Your Playlist');
@@ -64,27 +96,31 @@ function App() {
     setPlaylistName(e.target.value)
     }
 
-  const [searchResults, setSearchResults] = useState(dummyTracks);
+  const [searchResults, setSearchResults] = useState([]);
   const [playlistTracks, setPlaylistTracks] = useState([]);
-  const [removedFromCurrentSearch, setRemovedFromCurrentSearch] = useState([]);
+
 
   function addSongToPlaylist(track) {
-    setPlaylistTracks(prevPlaylist => [track,...prevPlaylist]);
-    setRemovedFromCurrentSearch(prevSearch => [track,...prevSearch]);
+    const trackExists = playlistTracks.some(t => t.id === track.id);
+  
+    if (!trackExists) {
+      setPlaylistTracks(prevPlaylist => [track, ...prevPlaylist]);
+    }
     setSearchResults(prevResults =>
       prevResults.filter(t => t.id !== track.id)
     );
   }
+  
 
   function removeSongFromPlaylist(track) {
+    //I need to check if the ID already exists in the search results first so I don't duplicate
     setPlaylistTracks(prevResults =>
       prevResults.filter(t => t.id !== track.id)
     );
-    removedFromCurrentSearch.forEach(t => {
-      if(t.id === track.id) {
-        setSearchResults(prevSearchResults => [track,...prevSearchResults]);
-      }
-    });
+    const searchExists = searchResults.some(t => t.id === track.id);
+    if (!searchExists) {
+      setSearchResults(prevSearchResults => [track,...prevSearchResults]);
+    }
   }
 
   function handlePlaylistCreate() {
@@ -92,7 +128,6 @@ function App() {
     console.log("we're making a playlist baby!") //Add API Data
     setSearchResults([]);
     setPlaylistTracks([]);
-    setRemovedFromCurrentSearch([]);
     setPlaylistName('Your Playlist');
   }
 
